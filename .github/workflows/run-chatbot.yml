@@ -1,0 +1,25 @@
+name: Run ChatBot
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message to send to the bot'
+        required: true
+        default: 'hello'
+
+jobs:
+  chat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile
+        run: gcc main.c -o chatbot -Wall -Wextra -Werror
+
+      - name: Chat
+        env:
+          MESSAGE: ${{ inputs.message }}
+        run: printf '%s\nbye\n' "$MESSAGE" | ./chatbot
