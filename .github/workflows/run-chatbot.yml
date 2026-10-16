@@ -22,4 +22,15 @@ jobs:
       - name: Chat
         env:
           MESSAGE: ${{ inputs.message }}
-        run: printf '%s\nbye\n' "$MESSAGE" | ./chatbot
+        run: |
+          OUTPUT=$(printf '%s\nbye\n' "$MESSAGE" | ./chatbot)
+          echo "$OUTPUT"
+          {
+            echo "## ChatBot"
+            echo ""
+            echo "**You:** $MESSAGE"
+            echo ""
+            echo '```'
+            echo "$OUTPUT"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
